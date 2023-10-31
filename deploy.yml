@@ -21,9 +21,9 @@ metadata:
   name: spring-service
 spec:
   type: NodePort
-    ports:
-      - port: 8080
-        targetPort: 8080
-        nodePort: 32050
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32050
   selector:
     app: spring
