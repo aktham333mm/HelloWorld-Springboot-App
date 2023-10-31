@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-jenkins
+spec:
+  selector:
+    matchLabels:
+      app: spring
+  template:
+    metadata:
+      labels:
+        app: spring
+    spec:
+      containers:
+        - image: aktham3/jenkins-spring   
+          name: sp-cont
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-service
+spec:
+  type: NodePort
+    ports:
+      - port: 8080
+        targetPort: 8080
+        nodePort: 32050
+  selector:
+    app: spring
