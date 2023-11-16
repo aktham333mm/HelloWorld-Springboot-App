@@ -6,7 +6,7 @@ on:
     branches: ["master"]
 jobs:
   packaging:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
@@ -16,7 +16,7 @@ jobs:
       - name: Run the Maven verify phase
         run: mvn --batch-mode --update-snapshots verify
   docker:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     depend-on: packaging
     steps:
       - name: build and push docker image
