@@ -1,28 +1,29 @@
-
-name: Java CI with Maven
-
+name: maven ci
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
-
+    branches: ["master"]
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  
+  packaging:
+    runs_on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-      
-    
-
-   
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Run the Maven verify phase
+        run: mvn --batch-mode --update-snapshots verify
+  docker:
+    runs_on: ubuntu-latest
+    depend-on: packaging
+    steps:
+      - name: build and push docker image
+        uses: mr-smithers-excellent/docker-build-push@v4
+        with:
+          image: aktham3/action-maven
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
